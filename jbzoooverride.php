@@ -28,7 +28,8 @@ class plgSystemJBZooOverride extends CMSPlugin {
 	 * @access public
 	 * @return null
 	 */
-	public function onAfterInitialise() {
+	public function onAfterInitialise()
+    {
 
 		// make sure ZOO exists
 		if (!ComponentHelper::getComponent('com_zoo', true)->enabled) {
@@ -58,7 +59,8 @@ class plgSystemJBZooOverride extends CMSPlugin {
      * @return void
      */
 
-	public function initOverride() {
+	public function initOverride()
+    {
         $this->_initTables();
         $this->_initPaths();
 	}
@@ -135,8 +137,6 @@ class plgSystemJBZooOverride extends CMSPlugin {
         foreach ($classList as $className => $path) {
             JLoader::register($className, $path, true);
         }
-
-        // jbdump($this->zoo->path->paths('elements:'), 0);
     }
 
     /**
