@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ @package   plg_system_jbzoooverride
+  ~ @version   1.0.0
+  ~ @author    Dmitriy Vasyukov - https://fictionlabs.ru
+  ~ @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
+  ~ @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+  ~ @link      https://fictionlabs.ru/
+  -->
+
 <extension version="3.6" type="plugin" group="system" method="upgrade" >
 	<name>System - JBZoo Override</name>
 	<author>Dmitriy Vasyukov</author>
@@ -11,6 +20,8 @@
 	<description>YOOtheme Pro plugin for JBZoo developed by FictionLabs</description>
 	<scriptfile>script.php</scriptfile>
 	<description>Plugin for Zoo component for JBZoo application Framework override</description>
+
+	<!-- Plugin files -->
 	<files>
 		<filename plugin="jbzoooverride">jbzoooverride.php</filename>
 	</files>

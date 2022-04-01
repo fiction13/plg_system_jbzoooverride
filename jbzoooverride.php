@@ -1,9 +1,9 @@
 <?php
 /*
- * @package   System - JBZooOverride
+ * @package   plg_system_jbzoooverride
  * @version   1.0.0
  * @author    Dmitriy Vasyukov - https://fictionlabs.ru
- * @copyright Copyright (c) 2021 Fictionlabs. All rights reserved.
+ * @copyright Copyright (c) 2022 Fictionlabs. All rights reserved.
  * @license   GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  * @link      https://fictionlabs.ru/
  */
@@ -15,10 +15,20 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Filesystem\File;
 
-class plgSystemJBZooOverride extends CMSPlugin {
+class plgSystemJBZooOverride extends CMSPlugin
+{
 
-	public $app;
-	public $zoo;
+	/**
+	 * @var
+	 * @since 1.0.0
+	 */
+	protected $app;
+
+	/**
+	 * @var
+	 * @since 1.0.0
+	 */
+	protected $zoo;
 
 	/**
 	 * onAfterInitialise handler
@@ -29,138 +39,146 @@ class plgSystemJBZooOverride extends CMSPlugin {
 	 * @return null
 	 */
 	public function onAfterInitialise()
-    {
+	{
 
 		// make sure ZOO exists
-		if (!ComponentHelper::getComponent('com_zoo', true)->enabled) {
+		if (!ComponentHelper::getComponent('com_zoo', true)->enabled)
+		{
 			return;
 		}
 
 		// load ZOO config
-		if (!File::exists(JPATH_ADMINISTRATOR.'/components/com_zoo/config.php') || !ComponentHelper::getComponent('com_zoo', true)->enabled) {
+		if (!File::exists(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php') || !ComponentHelper::getComponent('com_zoo', true)->enabled)
+		{
 			return;
 		}
-        
-		require_once(JPATH_ADMINISTRATOR.'/components/com_zoo/config.php');
+
+		require_once(JPATH_ADMINISTRATOR . '/components/com_zoo/config.php');
 
 		// make sure App class exists
-		if (!class_exists('App')) {
+		if (!class_exists('App'))
+		{
 			return;
 		}
 
 		// Get the ZOO App instance
 		$this->zoo = App::getInstance('zoo');
 
-        $this->zoo->event->dispatcher->connect('application:init', array($this, 'initOverride'));
+		$this->zoo->event->dispatcher->connect('application:init', array($this, 'initOverride'));
 	}
 
 	/**
-     * Init all
-     * @return void
-     */
+	 * Init all
+	 * @return void
+	 */
 
 	public function initOverride()
-    {
-        $this->_initTables();
-        $this->_initPaths();
+	{
+		$this->_initTables();
+		$this->_initPaths();
 	}
 
 	/**
-     * Add directory path
-     */
-    private function _initPaths()
-    {	
-    	$this->_addPath('jbapp:framework-override', 'jbzoo');
-    	$this->_addPath('jbapp:assets', 'jbassets');
-        $this->_addPath('jbassets:zoo', 'assets');
-        $this->_addPath('jbapp:config', 'jbconfig');
-        $this->_addPath('jbzoo:elements', 'jbelements');
-        $this->_addPath('jbapp:cart-elements', 'cart-elements');
-        $this->_addPath('jbapp:types', 'jbtypes');
+	 * Add directory path
+	 */
+	private function _initPaths()
+	{
+		$this->_addPath('jbapp:framework-override', 'jbzoo');
+		$this->_addPath('jbzoo:assets', 'jbassets');
+		$this->_addPath('jbassets:zoo', 'assets');
+		$this->_addPath('jbzoo:config', 'jbconfig');
+		$this->_addPath('jbzoo:elements', 'jbelements');
+		$this->_addPath('jbzoo:cart-elements', 'cart-elements');
+		$this->_addPath('jbzoo:types', 'jbtypes');
 
-        $this->_addPath('jbzoo:helpers', 'helpers');
-        $this->_addPath('jbzoo:helpers-std', 'helpers');
-        $this->_addPath('helpers:fields', 'fields');
+		$this->_addPath('jbzoo:helpers', 'helpers');
+		$this->_addPath('jbzoo:helpers-std', 'helpers');
+		$this->_addPath('helpers:fields', 'fields');
 
-        $this->_addPath('jbzoo:tables', 'tables');
-        $this->_addPath('jbzoo:classes-std', 'classes');
-        $this->_addPath('jbzoo:render', 'renderer');
-        $this->_addPath('jbzoo:views', 'jbviews');
-        $this->_addPath('jbapp:config', 'jbxml');
-        $this->_addPath('jbviews:', 'partials');
-        $this->_addPath('jbapp:joomla/elements', 'fields');
-        $this->_addPath('jbapp:templates', 'jbtmpl');
+		$this->_addPath('jbzoo:tables', 'tables');
+		$this->_addPath('jbzoo:classes-std', 'classes');
+		$this->_addPath('jbzoo:render', 'renderer');
+		$this->_addPath('jbzoo:views', 'jbviews');
+		$this->_addPath('jbzoo:config', 'jbxml');
+		$this->_addPath('jbviews:', 'partials');
+		$this->_addPath('jbzoo:joomla/elements', 'fields');
+		$this->_addPath('jbzoo:templates', 'jbtmpl');
 
-        $this->_addPath('modules:mod_jbzoo_search', 'mod_jbzoo_search');
-        $this->_addPath('modules:mod_jbzoo_props', 'mod_jbzoo_props');
-        $this->_addPath('modules:mod_jbzoo_basket', 'mod_jbzoo_basket');
-        $this->_addPath('modules:mod_jbzoo_category', 'mod_jbzoo_category');
-        $this->_addPath('modules:mod_jbzoo_item', 'mod_jbzoo_item');
-        $this->_addPath('modules:mod_jbzoo_currency', 'mod_jbzoo_currency');
+		$this->_addPath('modules:mod_jbzoo_search', 'mod_jbzoo_search');
+		$this->_addPath('modules:mod_jbzoo_props', 'mod_jbzoo_props');
+		$this->_addPath('modules:mod_jbzoo_basket', 'mod_jbzoo_basket');
+		$this->_addPath('modules:mod_jbzoo_category', 'mod_jbzoo_category');
+		$this->_addPath('modules:mod_jbzoo_item', 'mod_jbzoo_item');
+		$this->_addPath('modules:mod_jbzoo_currency', 'mod_jbzoo_currency');
 
-        $this->_addPath('plugins:/system/jbzoo', 'plugin_jbzoo');
+		$this->_addPath('plugins:/system/jbzoo', 'plugin_jbzoo');
 
-        // Add new elements folder
+		// Add new elements folder
 
-        $this->_addPath('jbzoo:zoo-elements', 'elements');
+		$this->_addPath('jbzoo:zoo-elements', 'elements');
 
-        // Add controllers
+		// Add controllers
 
-        if ($this->app->isClient('site')) {
-            $this->_addPath('jbzoo:controllers', 'controllers');
-        }
+		if ($this->app->isClient('site'))
+		{
+			$this->_addPath('jbzoo:controllers', 'controllers');
+		}
 
-        // Paths
+		// Paths
 
-        $frameworkPath = JPATH_SITE . '/media/zoo/applications/jbuniversal/framework-override';
-        $clsPath = $frameworkPath . '/classes';
-        $modPath = $frameworkPath . '/models';
-        $filPath = $frameworkPath . '/render';
-        $evtPath = $frameworkPath . '/events';
+		$frameworkPath = JPATH_SITE . '/media/zoo/applications/jbuniversal/framework-override';
+		$clsPath       = $frameworkPath . '/classes';
+		$modPath       = $frameworkPath . '/models';
+		$filPath       = $frameworkPath . '/render';
+		$evtPath       = $frameworkPath . '/events';
 
-        // Add class list
+		// Add class list
 
-        $classList = [
-            // Models example
+		$classList = [
+			// Models example
 
-            // 'JBModelCustom'          => $modPath . '/jbmodel.custom.php',
+			// 'JBModelCustom'          => $modPath . '/jbmodel.custom.php',
 
-            // Filter example
+			// Filter example
 
-            // 'JBFilterElementCustom'  => $filPath . '/element.custom.php',
+			// 'JBFilterElementCustom'  => $filPath . '/element.custom.php',
 
-            // Classes example
+			// Classes example
 
-            // 'JBClass'                => $clsPath . '/jbcustom.php',
-        ];
+			// 'JBClass'                => $clsPath . '/jbcustom.php',
+		];
 
-        foreach ($classList as $className => $path) {
-            JLoader::register($className, $path, true);
-        }
-    }
-
-    /**
-     * Add directory path
-     */
-    private function _initTables()
-    {
-        // Define your tables
-        // define('ZOO_TABLE_CUSTOM', '#__zoo_custom');
-    }
+		foreach ($classList as $className => $path)
+		{
+			JLoader::register($className, $path, true);
+		}
+	}
 
 	/**
-     * Register new path in system
-     * @param string $path
-     * @param string $pathName
-     * @return mixed
-     */
-    private function _addPath($path, $pathName)
-    {
-        if ($fullPath = $this->zoo->path->path($path)) {
-            return $this->zoo->path->register($fullPath, $pathName);
-        }
+	 * Add directory path
+	 */
+	private function _initTables()
+	{
+		// Define your tables
+		// define('ZOO_TABLE_CUSTOM', '#__zoo_custom');
+	}
 
-        return null;
-    }
+	/**
+	 * Register new path in system
+	 *
+	 * @param   string  $path
+	 * @param   string  $pathName
+	 *
+	 * @return mixed
+	 */
+	private function _addPath($path, $pathName)
+	{
+		if ($fullPath = $this->zoo->path->path($path))
+		{
+			return $this->zoo->path->register($fullPath, $pathName);
+		}
+
+		return null;
+	}
 
 }
